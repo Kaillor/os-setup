@@ -1,0 +1,26 @@
+--- applet.js.backup	2024-02-13 13:42:23.235758584 +0100
++++ applet.js	2024-02-13 13:43:52.727188998 +0100
+@@ -513,8 +513,8 @@
+         /* Simple cases */
+         if (this.numberOfMonitors === 1) {
+             monitorWatchList = [Main.layoutManager.primaryIndex];
+-        } else if (instances.length > 1 && !onPrimary) {
+-            monitorWatchList = [this.panel.monitorIndex];
++        // } else if (instances.length > 1 && !onPrimary) {
++        //     monitorWatchList = [this.panel.monitorIndex];
+         } else {
+            /* This is an instance on the primary monitor - it will be
+             * responsible for any monitors not covered individually.  First
+@@ -530,9 +530,9 @@
+             }
+ 
+             for (let i = 0; i < this.numberOfMonitors; i++) {
+-                if (instances.indexOf(i) === -1) {
+-                    monitorWatchList.push(i);
+-                }
++                // if (instances.indexOf(i) === -1) {
++                monitorWatchList.push(i);
++                // }
+             }
+         }
+         this.state.set({monitorWatchList});

@@ -1,0 +1,2 @@
+# show open windows in applet 'grouped-window-list' on all monitors
+/usr/share/cinnamon/applets/grouped-window-list@cinnamon.org/applet.js

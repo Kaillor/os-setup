@@ -76,7 +76,16 @@ __revertPatch() {
 
 __createBackupDirectory() {
     workingDirectory=$1
+    __addBackupDirectoryToGitignore
     mkdir -p "$workingDirectory/$backupDirectoryName"
+}
+
+__addBackupDirectoryToGitignore() {
+    gitignoreFile="$(dirname "${BASH_SOURCE[0]}")/.gitignore"
+    gitignoreEntry="$backupDirectoryName/"
+    if ! grep -qx "$gitignoreEntry" "$gitignoreFile"; then
+        echo "$gitignoreEntry" >>"$gitignoreFile"
+    fi
 }
 
 __lineIsValidFile() {

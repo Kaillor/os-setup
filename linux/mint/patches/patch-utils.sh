@@ -18,7 +18,7 @@ applyPatches() {
         if __lineIsValidFile "$line"; then
             __applyPatch "$workingDirectory" "$line"
         fi
-    done < "$fileWithListOfFilesToPatch"
+    done <"$fileWithListOfFilesToPatch"
 }
 
 __applyPatch() {
@@ -55,7 +55,7 @@ revertPatches() {
         if __lineIsValidFile "$line"; then
             __revertPatch "$workingDirectory" "$line"
         fi
-    done < "$fileWithListOfFilesToRevert"
+    done <"$fileWithListOfFilesToRevert"
 }
 
 __revertPatch() {
@@ -81,7 +81,7 @@ __createBackupDirectory() {
 
 __lineIsValidFile() {
     line=$1
-    if ! ( __lineIsEmpty "$line" || __lineIsComment "$line" ); then
+    if ! (__lineIsEmpty "$line" || __lineIsComment "$line"); then
         if __fileExists "$line"; then
             return 1
         else

@@ -9,7 +9,7 @@ usage() {
     echo "              $patchDirectoryName and have the same name as the file"
     echo "              plus the extension '.patch'. Original files will be"
     echo "              backed up in a directory called $backupDirectoryName"
-    echo "              next to this file." 
+    echo "              next to this file."
     exit 1
 }
 

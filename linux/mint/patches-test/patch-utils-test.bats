@@ -1,8 +1,7 @@
 #!/bin/bash
 
 setup() {
-    patchUtilsFile=$(realpath "${BASH_SOURCE[0]}/../patches/patch-utils.sh")
-    source "$patchUtilsFile"
+    load "../patches/patch-utils.sh"
 }
 
 @test "File with list of files to patch does not exist." {

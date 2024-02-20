@@ -12,7 +12,7 @@ applyPatches() {
     echo "Applying patches to files in $fileWithListOfFilesToPatch"
 
     workingDirectory=$(dirname "$fileWithListOfFilesToPatch")
-    __createBackupDirectory $workingDirectory
+    __createBackupDirectory "$workingDirectory"
 
     while IFS= read -r line; do
         if __lineIsValidFile "$line"; then

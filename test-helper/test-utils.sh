@@ -9,5 +9,5 @@ loadScriptUnderTest() {
 }
 
 __callingScript() {
-    return $(realpath "$(echo "$(caller 0)" | cut -d ' ' -f 2)")
+    echo $(realpath "$(echo "$(caller 0)" | cut -d ' ' -f 2)")
 }

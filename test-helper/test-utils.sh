@@ -14,7 +14,7 @@ __callingTestScript() {
 }
 
 __scriptUnderTest() {
-    scriptUnderTest=$1
-    scriptUnderTestFromRoot=${scriptUnderTest#"$rootDirectory/test/"}
+    callingTestScript=$1
+    scriptUnderTestFromRoot=${callingTestScript#"$rootDirectory/test/"}
     echo "$rootDirectory/$scriptUnderTestFromRoot"
 }

@@ -6,15 +6,15 @@ load "$rootDirectory/test-helper/bats/bats-assert/load.bash"
 
 loadScriptUnderTest() {
     callingTestScript=$(__callingTestScript)
-    load "$(__pathOfScriptUnderTest "$callingTestScript")"
+    load "$(__scriptUnderTest "$callingTestScript")"
 }
 
 __callingTestScript() {
-    echo $(realpath "$(echo "$(caller 0)" | cut -d ' ' -f 2)")
+    echo $(realpath "$(echo "$(caller 1)" | cut -d ' ' -f 2)")
 }
 
-__pathOfScriptUnderTest() {
-    callingTestScript=$1
-    scriptUnderTestFromRoot=${callingTestScript#"$rootDirectory/test/"}
+__scriptUnderTest() {
+    scriptUnderTest=$1
+    scriptUnderTestFromRoot=${scriptUnderTest#"$rootDirectory/test/"}
     echo "$rootDirectory/$scriptUnderTestFromRoot"
 }

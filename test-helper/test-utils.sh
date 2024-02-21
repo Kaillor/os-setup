@@ -5,7 +5,8 @@ load "$rootDirectory/test-helper/bats/bats-support/load.bash"
 load "$rootDirectory/test-helper/bats/bats-assert/load.bash"
 
 loadScriptUnderTest() {
-    load "$(__scriptUnderTest "${BASH_SOURCE[1]}")"
+    callingTestScript=${BASH_SOURCE[1]}
+    load "$(__scriptUnderTest "$callingTestScript")"
 }
 
 __scriptUnderTest() {

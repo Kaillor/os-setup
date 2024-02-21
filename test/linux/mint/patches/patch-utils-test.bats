@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$(git rev-parse --show-toplevel)/test-helper/test-utils.sh"
 
 setup() {
     load "../patches/patch-utils.sh"

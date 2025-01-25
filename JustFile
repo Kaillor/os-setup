@@ -5,5 +5,9 @@ format-check:
     find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shfmt -d -i 2 -ci -s -sr -bn
 shellcheck:
     find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellcheck
+shellharden-apply:
+    find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellharden --replace
+shellharden-check:
+    find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellharden --check
 test:
     sudo find "./scripts" -name "*.bats" -print0 | xargs -0 "./tests/bats/core/bin/bats"

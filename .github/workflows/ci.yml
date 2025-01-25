@@ -40,6 +40,23 @@ jobs:
         run: |
           just shellcheck
 
+  shellharden:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install just
+          wget -qO shellharden.tar.gz https://github.com/anordal/shellharden/releases/latest/download/shellharden-x86_64-unknown-linux-gnu.tar.gz
+          sudo tar xf shellharden.tar.gz -C /usr/local/bin shellharden
+
+      - name: Run shellharden check
+        run: |
+          just shellharden-check
+
   test:
     runs-on: ubuntu-latest
     steps:

@@ -1,2 +1,5 @@
+#!/bin/bash
+shellcheck:
+    find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellcheck
 test:
     sudo find "./scripts" -name "*.bats" -print0 | xargs -0 "./tests/bats/core/bin/bats"

@@ -1,4 +1,8 @@
 #!/bin/bash
+format-apply:
+    find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shfmt -w -i 2 -ci -s -sr -bn
+format-check:
+    find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shfmt -d -i 2 -ci -s -sr -bn
 shellcheck:
     find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellcheck
 test:

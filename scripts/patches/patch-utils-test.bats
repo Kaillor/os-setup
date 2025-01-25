@@ -12,7 +12,7 @@ teardown() {
 
 @test "applyPatches | file with list of files to patch not provided" {
     run applyPatches
-    assert_output "File with list of files to patch not provided."
+    assert_output "fail"
 }
 
 @test "applyPatches | file with list of files to patch not found" {

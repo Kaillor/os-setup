@@ -1,0 +1,2 @@
+test:
+    sudo find "./scripts" -name "*.bats" -print0 | xargs -0 "./tests/bats/core/bin/bats"

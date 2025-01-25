@@ -13,9 +13,9 @@ usage() {
     exit 1
 }
 
-if [[ ! $# -eq 1 ]]; then
+if [[ ! "$#" -eq 1 ]]; then
     usage
 fi
 
-fileWithListOfFilesToPatch=$(realpath "$1")
+fileWithListOfFilesToPatch="$(realpath "$1")"
 applyPatches "$fileWithListOfFilesToPatch"

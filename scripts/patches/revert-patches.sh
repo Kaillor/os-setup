@@ -11,9 +11,9 @@ usage() {
     exit 1
 }
 
-if [[ ! $# -eq 1 ]]; then
+if [[ ! "$#" -eq 1 ]]; then
     usage
 fi
 
-fileWithListOfFilesToRevert=$(realpath "$1")
+fileWithListOfFilesToRevert="$(realpath "$1")"
 revertPatches "$fileWithListOfFilesToRevert"

@@ -8,6 +8,38 @@ on:
       - main
 
 jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install just golang
+          go install mvdan.cc/sh/v3/cmd/shfmt@latest
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: Run format check
+        run: |
+          just format-check
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install just shellcheck
+
+      - name: Run shellcheck
+        run: |
+          just shellcheck
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -24,18 +56,3 @@ jobs:
       - name: Run tests
         run: |
           just test
-
-  shellcheck:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install just shellcheck
-
-      - name: Run shellcheck
-        run: |
-          just shellcheck

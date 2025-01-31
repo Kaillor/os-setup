@@ -1,20 +1,22 @@
 #!/bin/bash
+source "$(dirname "${BASH_SOURCE[0]}")/../script-utils.sh"
+
 backupDirectoryName="backups"
 patchDirectoryName="patches"
 
 applyPatches() {
   if [ "$#" -eq 0 ]; then
-    echo "File with list of files to patch not provided."
-    return
+    error "File with list of files to patch not provided."
+    return 2
   fi
 
   fileWithListOfFilesToPatch="$1"
   if ! __fileExists "$fileWithListOfFilesToPatch"; then
-    echo "File '$file' with list of files to patch not found."
-    return
+    error "File '$file' with list of files to patch not found."
+    return 1
   fi
 
-  echo "Applying patches to files in '$fileWithListOfFilesToPatch'."
+  info "Applying patches to files in '$fileWithListOfFilesToPatch'."
 
   workingDirectory="$(dirname "$fileWithListOfFilesToPatch")"
   mkdir -p "$workingDirectory/$backupDirectoryName"
@@ -24,7 +26,7 @@ applyPatches() {
       if __fileExists "$line"; then
         __applyPatch "$workingDirectory" "$line"
       else
-        echo "File to patch '$line' not found."
+        warning "File to patch '$line' not found."
       fi
     fi
   done < "$fileWithListOfFilesToPatch"
@@ -38,11 +40,11 @@ __applyPatch() {
   patchFile="$workingDirectory/$patchDirectoryName/$fileToPatchName.patch"
 
   if ! __fileExists "$patchFile"; then
-    echo "Patch file '$patchFile' for file to patch '$fileToPatch' not found."
+    error "Patch file '$patchFile' for file to patch '$fileToPatch' not found."
     return
   fi
 
-  echo "Backing up file '$fileToPatch'."
+  info "Backing up file '$fileToPatch'."
   cp "$fileToPatch" "$workingDirectory/$backupDirectoryName"
 
   sudo patch "$fileToPatch" "$patchFile"
@@ -50,17 +52,17 @@ __applyPatch() {
 
 revertPatches() {
   if [ "$#" -eq 0 ]; then
-    echo "File with list of files to revert not provided."
-    return
+    error "File with list of files to revert not provided."
+    return 2
   fi
 
   fileWithListOfFilesToRevert="$1"
   if ! __fileExists "$fileWithListOfFilesToRevert"; then
-    echo "File '$file' with list of files to revert not found."
-    return
+    error "File '$file' with list of files to revert not found."
+    return 1
   fi
 
-  echo "Reverting patches of files in '$fileWithListOfFilesToRevert'."
+  info "Reverting patches of files in '$fileWithListOfFilesToRevert'."
 
   workingDirectory="$(dirname "$fileWithListOfFilesToRevert")"
 
@@ -69,7 +71,7 @@ revertPatches() {
       if __fileExists "$line"; then
         __revertPatch "$workingDirectory" "$line"
       else
-        echo "File to revert '$line' not found."
+        warning "File to revert '$line' not found."
       fi
     fi
   done < "$fileWithListOfFilesToRevert"
@@ -83,11 +85,11 @@ __revertPatch() {
   backupFile="$workingDirectory/$backupDirectoryName/$fileToRevertName"
 
   if ! __fileExists "$backupFile"; then
-    echo "Backup file '$backupFile' not found."
+    error "Backup file '$backupFile' for file to revert '$fileToRevert' not found."
     return
   fi
 
-  echo "Reverting file '$fileToRevert'."
+  info "Reverting file '$fileToRevert'."
   cp "$backupFile" "$fileToRevert"
 }
 

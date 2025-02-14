@@ -1,15 +1,22 @@
 #!/bin/bash
-ci:
+@ ci:
+  printf "Running CI\n"
   just test && just shellcheck && just shellharden-check && just format-check
-format-apply:
+@ format-apply:
+  printf "Fixing format\n"
   find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shfmt -w -i 2 -ci -s -sr -bn
-format-check:
+@ format-check:
+  printf "Checking format\n"
   find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shfmt -d -i 2 -ci -s -sr -bn
-shellcheck:
+@ shellcheck:
+  printf "Finding bugs\n"
   find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellcheck
-shellharden-apply:
+@ shellharden-apply:
+  printf "Fixing vulnerabilities\n"
   find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellharden --replace
-shellharden-check:
+@ shellharden-check:
+  printf "Checking vulnerabilities\n"
   find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellharden --check
-test:
+@ test:
+  printf "Running tests\n"
   sudo BATS_TEST_TIMEOUT=5 "./tests/bats/core/bin/bats" -r "./scripts"

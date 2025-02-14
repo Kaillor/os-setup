@@ -1,22 +1,32 @@
 #!/bin/bash
-source "$(dirname "${BASH_SOURCE[0]}")/patch-utils.sh"
-
 usage() {
-  printf "Usage: %s <file>\n" "$(basename "$0")"
-  printf "  file        File that contains a list of absolute filepaths which\n"
-  printf "              need to be patched. Corresponding patch files need to\n"
-  printf "              be placed next to this file in a directory called\n"
-  printf "              %s and have the same name as the file\n" "$patchDirectoryName"
-  printf "              plus the extension '.patch'. Original files will be\n"
-  printf "              backed up in a directory called %s\n" "$backupDirectoryName"
-  printf "              next to this file.\n"
+  printf "Usage: %s <path>\n" "$(basename "${BASH_SOURCE[0]}")"
+  printf "  path        Path that corresponds to a file containing a list of\n"
+  printf "              absolute file paths that need to be patched, or a\n"
+  printf "              directory. If the path is a directory, all child\n"
+  printf "              directories are searched for files named\n"
+  printf "              '%s' which must contain a list of absolute\n" "$FILES_TO_PATCH_NAME"
+  printf "              file paths that need to be patched. Corresponding patch\n"
+  printf "              files must be placed next to each file processed this\n"
+  printf "              way in a directory called '%s' and have the same\n" "$PATCH_DIRECTORY_NAME"
+  printf "              name as the file to be patched plus the extension\n"
+  printf "              '.patch'. The original files will be backed up in a\n"
+  printf "              directory called '%s' next to the file.\n" "$BACKUP_DIRECTORY_NAME"
 }
 
-if [[ ! $# -eq 1 ]]; then
-  usage
-  exit 2
-fi
+main() {
+  source "$(dirname "${BASH_SOURCE[0]}")/patch-utils.sh"
 
-fileWithListOfFilesToPatch="$(realpath "$1")"
-applyPatches "$fileWithListOfFilesToPatch"
-exit "$?"
+  if [[ ! $# -eq 1 ]]; then
+    usage
+    return 2
+  fi
+
+  local path="$1"
+
+  apply_patches "$path"
+
+  return 0
+}
+
+main "$@"

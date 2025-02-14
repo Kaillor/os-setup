@@ -1,130 +1,155 @@
 #!/bin/bash
 source "$(dirname "${BASH_SOURCE[0]}")/../script-utils.sh"
 
-backupDirectoryName="backups"
-patchDirectoryName="patches"
+export FILES_TO_PATCH_NAME="files-to-patch"
+export BACKUP_DIRECTORY_NAME="backups"
+export PATCH_DIRECTORY_NAME="patches"
 
-applyPatches() {
-  if [ "$#" -eq 0 ]; then
-    error "File with list of files to patch not provided."
-    return 2
-  fi
+readonly FILES_TO_PATCH_NAME
+readonly BACKUP_DIRECTORY_NAME
+readonly PATCH_DIRECTORY_NAME
 
-  fileWithListOfFilesToPatch="$1"
-  if ! __fileExists "$fileWithListOfFilesToPatch"; then
-    error "File '$file' with list of files to patch not found."
+apply_patches() {
+  local path="$1"
+
+  if [[ -f $path ]]; then
+    __apply_patches "$(realpath "$path")"
+  elif [[ -d $path ]]; then
+    info "Searching for files named '$FILES_TO_PATCH_NAME' in '$path'."
+    find "$path" -name "$FILES_TO_PATCH_NAME" -print0 | while IFS= read -r -d '' file; do
+      __apply_patches "$(realpath "$file")"
+    done
+  else
+    error "Path '$path' does not exist."
     return 1
   fi
 
-  info "Applying patches to files in '$fileWithListOfFilesToPatch'."
+  return 0
+}
 
-  workingDirectory="$(dirname "$fileWithListOfFilesToPatch")"
-  mkdir -p "$workingDirectory/$backupDirectoryName"
+__apply_patches() {
+  local file_with_list_of_files_to_patch="$1"
+
+  info "Applying patches to files in '$file_with_list_of_files_to_patch'."
+
+  local working_directory
+  working_directory="$(dirname "$file_with_list_of_files_to_patch")"
+  mkdir -p "$working_directory/$BACKUP_DIRECTORY_NAME"
 
   while IFS= read -r "line"; do
-    if __lineIsValid "$line"; then
-      if __fileExists "$line"; then
-        __applyPatch "$workingDirectory" "$line"
+    if __line_is_valid "$line"; then
+      if [[ -f $line ]]; then
+        __apply_patch "$working_directory" "$line"
       else
         warning "File to patch '$line' not found."
       fi
     fi
-  done < "$fileWithListOfFilesToPatch"
+  done < "$file_with_list_of_files_to_patch"
+
+  return 0
 }
 
-__applyPatch() {
-  workingDirectory="$1"
-  fileToPatch="$2"
+__apply_patch() {
+  local working_directory="$1"
+  local file_to_patch="$2"
 
-  fileToPatchName="$(basename "$fileToPatch")"
-  patchFile="$workingDirectory/$patchDirectoryName/$fileToPatchName.patch"
+  local patch_file
+  patch_file="$working_directory/$PATCH_DIRECTORY_NAME/$(basename "$file_to_patch").patch"
 
-  if ! __fileExists "$patchFile"; then
-    error "Patch file '$patchFile' for file to patch '$fileToPatch' not found."
+  if [[ ! -f $patch_file ]]; then
+    error "Patch file '$patch_file' for file to patch '$file_to_patch' not found."
     return
   fi
 
-  info "Backing up file '$fileToPatch'."
-  cp "$fileToPatch" "$workingDirectory/$backupDirectoryName"
+  info "Backing up file '$file_to_patch'."
+  cp "$file_to_patch" "$working_directory/$BACKUP_DIRECTORY_NAME"
 
-  sudo patch "$fileToPatch" "$patchFile"
+  sudo patch "$file_to_patch" "$patch_file"
+
+  return 0
 }
 
-revertPatches() {
-  if [ "$#" -eq 0 ]; then
-    error "File with list of files to revert not provided."
-    return 2
-  fi
+revert_patches() {
+  local path="$1"
 
-  fileWithListOfFilesToRevert="$1"
-  if ! __fileExists "$fileWithListOfFilesToRevert"; then
-    error "File '$file' with list of files to revert not found."
+  if [[ -f $path ]]; then
+    __revert_patches "$(realpath "$path")"
+  elif [[ -d $path ]]; then
+    info "Searching for files named '$FILES_TO_PATCH_NAME' in '$path'."
+    find "$path" -name "$FILES_TO_PATCH_NAME" -print0 | while IFS= read -r -d '' file; do
+      __revert_patches "$(realpath "$file")"
+    done
+  else
+    error "Path '$path' does not exist."
     return 1
   fi
+}
 
-  info "Reverting patches of files in '$fileWithListOfFilesToRevert'."
+__revert_patches() {
+  local file_with_list_of_files_to_revert="$1"
 
-  workingDirectory="$(dirname "$fileWithListOfFilesToRevert")"
+  info "Reverting patches of files in '$file_with_list_of_files_to_revert'."
+
+  local working_directory
+  working_directory="$(dirname "$file_with_list_of_files_to_revert")"
 
   while IFS= read -r "line"; do
-    if __lineIsValid "$line"; then
-      if __fileExists "$line"; then
-        __revertPatch "$workingDirectory" "$line"
+    if __line_is_valid "$line"; then
+      if [[ -f $line ]]; then
+        __revert_patch "$working_directory" "$line"
       else
         warning "File to revert '$line' not found."
       fi
     fi
-  done < "$fileWithListOfFilesToRevert"
+  done < "$file_with_list_of_files_to_revert"
+
+  return 0
 }
 
-__revertPatch() {
-  workingDirectory="$1"
-  fileToRevert="$2"
+__revert_patch() {
+  local working_directory="$1"
+  local file_to_revert="$2"
 
-  fileToRevertName="$(basename "$fileToRevert")"
-  backupFile="$workingDirectory/$backupDirectoryName/$fileToRevertName"
+  local backup_file
+  backup_file="$working_directory/$BACKUP_DIRECTORY_NAME/$(basename "$file_to_revert")"
 
-  if ! __fileExists "$backupFile"; then
-    error "Backup file '$backupFile' for file to revert '$fileToRevert' not found."
+  if [[ ! -f $backup_file ]]; then
+    error "Backup file '$backup_file' for file to revert '$file_to_revert' not found."
     return
   fi
 
-  info "Reverting file '$fileToRevert'."
-  cp "$backupFile" "$fileToRevert"
+  info "Reverting file '$file_to_revert'."
+  cp "$backup_file" "$file_to_revert"
+
+  return 0
 }
 
-__lineIsValid() {
-  line="$1"
-  if ! (__lineIsEmpty "$line" || __lineIsComment "$line"); then
-    return 0
-  else
+__line_is_valid() {
+  local line="$1"
+
+  if __line_is_empty "$line" || __line_is_comment "$line"; then
     return 1
   fi
+
+  return 0
 }
 
-__lineIsEmpty() {
-  line="$1"
+__line_is_empty() {
+  local line="$1"
+
   if [[ -n $line ]]; then
     return 1
-  else
-    return 0
   fi
+
+  return 0
 }
 
-__lineIsComment() {
-  line="$1"
-  if [[ $line == \#* ]]; then
-    return 0
-  else
-    return 1
-  fi
-}
+__line_is_comment() {
+  local line="$1"
 
-__fileExists() {
-  file="$1"
-  if [[ -f $file ]]; then
-    return 0
-  else
+  if [[ $line != \#* ]]; then
     return 1
   fi
+
+  return 0
 }

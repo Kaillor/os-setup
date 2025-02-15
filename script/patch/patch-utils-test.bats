@@ -1,9 +1,9 @@
 #!/bin/bash
-load "../../tests/test-utils.sh"
+load "../../test/test-utils.sh"
 
 setup() {
   load "./patch-utils.sh"
-  cp -r "$ROOT_DIRECTORY/tests/resources/patch/patch-utils" "/tmp"
+  cp -r "$ROOT_DIRECTORY/test/resources/patch/patch-utils" "/tmp"
 }
 
 teardown() {
@@ -18,7 +18,7 @@ teardown() {
 
 @test "apply_patches | ignore invalid lines in file with list of files to patch | empty lines" {
   local directory="/tmp/patch-utils/apply-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/apply-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/apply-patches"
 
   run apply_patches "$directory/invalid-lines_empty"
   assert_success
@@ -41,7 +41,7 @@ teardown() {
 
 @test "apply_patches | ignore invalid lines in file with list of files to patch | comments" {
   local directory="/tmp/patch-utils/apply-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/apply-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/apply-patches"
 
   run apply_patches "$directory/invalid-lines_comments"
   assert_success
@@ -64,7 +64,7 @@ teardown() {
 
 @test "apply_patches | skip missing files | files to patch" {
   local directory="/tmp/patch-utils/apply-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/apply-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/apply-patches"
 
   run apply_patches "$directory/missing-files_files-to-patch"
   assert_success
@@ -89,7 +89,7 @@ teardown() {
 
 @test "apply_patches | skip missing files | patch files" {
   local directory="/tmp/patch-utils/apply-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/apply-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/apply-patches"
 
   run apply_patches "$directory/missing-files_patch-files"
   assert_success
@@ -131,7 +131,7 @@ teardown() {
 
 @test "revert_patches | ignore invalid lines in file with list of files to revert | empty lines" {
   local directory="/tmp/patch-utils/revert-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/revert-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/revert-patches"
 
   run revert_patches "$directory/invalid-lines_empty"
   assert_success
@@ -146,7 +146,7 @@ teardown() {
 
 @test "revert_patches | ignore invalid lines in file with list of files to revert | comments" {
   local directory="/tmp/patch-utils/revert-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/revert-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/revert-patches"
 
   run revert_patches "$directory/invalid-lines_comments"
   assert_success
@@ -161,7 +161,7 @@ teardown() {
 
 @test "revert_patches | skip missing files | files to revert" {
   local directory="/tmp/patch-utils/revert-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/revert-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/revert-patches"
 
   run revert_patches "$directory/missing-files_files-to-revert"
   assert_success
@@ -178,7 +178,7 @@ teardown() {
 
 @test "revert_patches | skip missing files | backup files" {
   local directory="/tmp/patch-utils/revert-patches"
-  local original_directory="$ROOT_DIRECTORY/tests/resources/patch/patch-utils/revert-patches"
+  local original_directory="$ROOT_DIRECTORY/test/resources/patch/patch-utils/revert-patches"
 
   run revert_patches "$directory/missing-files_backup-files"
   assert_success

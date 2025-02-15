@@ -13,5 +13,5 @@ binary_next_line   = true
 switch_case_indent = true
 space_redirects    = true
 
-[tests/bats/**]
+[test/bats/**]
 ignore = true

@@ -1,9 +1,9 @@
 #!/bin/bash
-load "../tests/test-utils.sh"
+load "../test/test-utils.sh"
 
 setup() {
   load "./script-utils.sh"
-  cp -r "$ROOT_DIRECTORY/tests/resources/script-utils" "/tmp"
+  cp -r "$ROOT_DIRECTORY/test/resources/script-utils" "/tmp"
 }
 
 teardown() {

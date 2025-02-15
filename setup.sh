@@ -8,9 +8,9 @@ main() {
   local profile
   menu "Profile" "profiles" "profile"
 
-  local os_directory="$script_directory/os"
+  local setup_directory="$script_directory/setup"
   local -a system
-  source "$os_directory/setup.sh" "system"
+  source "$setup_directory/setup.sh" "system"
 
   while true; do
     printf "Profile: %s\n" "$profile"
@@ -26,7 +26,7 @@ main() {
     fi
   done
 
-  local system_part_directory="$os_directory"
+  local system_part_directory="$setup_directory"
   for system_part in "${system[@]}"; do
     system_part_directory+="/$system_part"
 

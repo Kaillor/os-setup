@@ -1,2 +1,2 @@
 backups/
-!tests/**/backups/
+!test/**/backups/

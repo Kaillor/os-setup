@@ -1,9 +1,9 @@
 #!/bin/bash
-load "../tests/test-utils.sh"
+load "../test/test-utils.sh"
 
 setup() {
   load "./script-utils.sh"
-  cp -r "$ROOT_DIRECTORY/tests/resources/script-utils" "/tmp"
+  cp -r "$ROOT_DIRECTORY/test/resources/script-utils" "/tmp"
 }
 
 teardown() {
@@ -29,7 +29,7 @@ teardown() {
 }
 
 @test "setup_menu | exit" {
-  assert_exit "$ROOT_DIRECTORY/scripts/script-utils.sh" 'setup_menu "Menu label" "/tmp/script-utils/setup-menu" "menu_selection" <<< "exit"' 0
+  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" 'setup_menu "Menu label" "/tmp/script-utils/setup-menu" "menu_selection" <<< "exit"' 0
 }
 
 @test "setup_menu | selection | output" {
@@ -49,7 +49,7 @@ Type 'exit' to quit."
 }
 
 @test "menu | exit" {
-  assert_exit "$ROOT_DIRECTORY/scripts/script-utils.sh" 'menu "Menu label" "options" "selection" <<< "exit"' 0
+  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" 'menu "Menu label" "options" "selection" <<< "exit"' 0
 }
 
 @test "menu | selection | output" {

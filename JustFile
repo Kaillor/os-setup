@@ -1,21 +1,21 @@
 @ci:
-  printf "Running CI\n"
+  printf "Run CI\n"
   just test && just shellcheck && just shellharden-check && just format-check
 @format-apply:
-  printf "Fixing format\n"
+  printf "Fix format\n"
   shfmt -w .
 @format-check:
-  printf "Checking format\n"
+  printf "Check format\n"
   shfmt -d .
 @shellcheck:
-  printf "Finding bugs\n"
-  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellcheck
+  printf "Find bugs\n"
+  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*" -print0 | xargs -0 shellcheck
 @shellharden-apply:
-  printf "Fixing vulnerabilities\n"
-  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellharden --replace
+  printf "Fix vulnerabilities\n"
+  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*" -print0 | xargs -0 shellharden --replace
 @shellharden-check:
-  printf "Checking vulnerabilities\n"
-  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellharden --check
+  printf "Find vulnerabilities\n"
+  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*" -print0 | xargs -0 shellharden --check
 @test:
-  printf "Running tests\n"
-  sudo BATS_TEST_TIMEOUT=5 "./tests/bats/core/bin/bats" -r "./scripts"
+  printf "Run tests\n"
+  sudo BATS_TEST_TIMEOUT=5 "./test/bats/core/bin/bats" -r "./script"

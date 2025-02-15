@@ -1,9 +1,9 @@
 #!/bin/bash
-load "../../tests/test-utils.sh"
+load "../../test/test-utils.sh"
 
 setup() {
   load "./patch-utils.sh"
-  cp -r "$ROOT_DIRECTORY/tests/resources/patches/apply-patches" "/tmp"
+  cp -r "$ROOT_DIRECTORY/test/resources/patch/apply-patches" "/tmp"
 }
 
 teardown() {

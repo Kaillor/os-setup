@@ -8,7 +8,7 @@ usage() {
 main() {
   local script_directory
   script_directory="$(dirname "${BASH_SOURCE[0]}")"
-  source "$script_directory/../../scripts/script-utils.sh"
+  source "$script_directory/../../script/script-utils.sh"
 
   if [[ ! $# -eq 1 ]]; then
     usage

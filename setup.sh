@@ -2,7 +2,7 @@
 main() {
   local script_directory
   script_directory="$(dirname "${BASH_SOURCE[0]}")"
-  source "$script_directory/scripts/script-utils.sh"
+  source "$script_directory/script/script-utils.sh"
 
   local -a profiles=("personal" "axon-ivy")
   local profile

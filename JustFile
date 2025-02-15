@@ -18,4 +18,4 @@
   find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./tests/bats/*" -print0 | xargs -0 shellharden --check
 @test:
   printf "Running tests\n"
-  sudo BATS_TEST_TIMEOUT=5 "./tests/bats/core/bin/bats" -r "./scripts"
+  sudo BATS_TEST_TIMEOUT=5 "./tests/bats/core/bin/bats" -r "./script"

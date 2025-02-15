@@ -3,7 +3,7 @@ load "../../tests/test-utils.sh"
 
 setup() {
   load "./patch-utils.sh"
-  cp -r "$ROOT_DIRECTORY/tests/resources/patches/revert-patches" "/tmp"
+  cp -r "$ROOT_DIRECTORY/tests/resources/patch/revert-patches" "/tmp"
 }
 
 teardown() {

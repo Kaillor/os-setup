@@ -1,0 +1,38 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "setup",
+      "path": "setup"
+    },
+    {
+      "name": "script",
+      "path": "script"
+    },
+    {
+      "name": "test",
+      "path": "test"
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "jetmartin.bats",
+      "editorconfig.editorconfig",
+      "github.vscode-github-actions",
+      "esbenp.prettier-vscode",
+      "foxundermoon.shell-format",
+      "timonwong.shellcheck",
+      "nefrob.vscode-just-syntax"
+    ]
+  },
+  "settings": {
+    "prettier.proseWrap": "always",
+    "shellformat.useEditorConfig": true,
+    "[jsonc]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
+}

@@ -1,10 +1,11 @@
 #!/bin/bash
 load "../test/test-utils.sh"
 
+ORIGINAL_DIRECTORY="$ROOT_DIRECTORY/test/resources/script-utils"
+
 setup() {
   load "./script-utils.sh"
   TEST_TEMP_DIR="$(temp_make)"
-  cp -r "$ROOT_DIRECTORY/test/resources/script-utils" "$TEST_TEMP_DIR"
 }
 
 teardown() {
@@ -12,29 +13,47 @@ teardown() {
 }
 
 @test "info" {
-  run info "info message"
+  bats_require_minimum_version 1.5.0
+  run --separate-stderr info "info message"
   assert_success
-  assert_line_log 0 "INFO" "info message"
+  assert_regex "$output" "$(line_log_regex "INFO" "info message")"
+  assert_equal "$stderr" ""
 }
 
 @test "warning" {
-  run warning "warning message"
+  bats_require_minimum_version 1.5.0
+  run --separate-stderr warning "warning message"
   assert_success
-  assert_line_log 0 "WARNING" "warning message"
+  assert_equal "$output" ""
+  assert_regex "$stderr" "$(line_log_regex "WARNING" "warning message")"
 }
 
 @test "error" {
-  run error "error message"
+  bats_require_minimum_version 1.5.0
+  run --separate-stderr error "error message"
   assert_success
-  assert_line_log 0 "ERROR" "error message"
+  assert_equal "$output" ""
+  assert_regex "$stderr" "$(line_log_regex "ERROR" "error message")"
+}
+
+@test "run_and_log" {
+  cd "$TEST_TEMP_DIR"
+  run run_and_log "echo \"message \e[31m0\e[0m\"; echo \"message \e[32m1\e[0m\" >&2; echo \"message \e[33m2\e[0m\""
+  assert_output "message \e[31m0\e[0m
+message \e[32m1\e[0m
+message \e[33m2\e[0m"
 }
 
 @test "setup_menu | exit" {
-  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" "setup_menu \"Menu label\" \"$TEST_TEMP_DIR/script-utils/setup-menu\" \"menu_selection\" <<< \"exit\"" 0
+  cp -r "$ORIGINAL_DIRECTORY/." "$TEST_TEMP_DIR"
+
+  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" "setup_menu \"Menu label\" \"$TEST_TEMP_DIR/setup-menu\" \"menu_selection\" <<< \"exit\"" 0
 }
 
 @test "setup_menu | selection | output" {
-  run setup_menu "Menu label" "$TEST_TEMP_DIR/script-utils/setup-menu" "menu_selection" <<< "2"
+  cp -r "$ORIGINAL_DIRECTORY/." "$TEST_TEMP_DIR"
+
+  run setup_menu "Menu label" "$TEST_TEMP_DIR/setup-menu" "menu_selection" <<< "2"
   assert_success
   assert_output "Menu label:
  1. option0
@@ -44,8 +63,10 @@ Type 'exit' to quit."
 }
 
 @test "setup_menu | selection | variable set" {
+  cp -r "$ORIGINAL_DIRECTORY/." "$TEST_TEMP_DIR"
+
   local menu_selection
-  setup_menu "Menu label" "$TEST_TEMP_DIR/script-utils/setup-menu" "menu_selection" <<< "2"
+  setup_menu "Menu label" "$TEST_TEMP_DIR/setup-menu" "menu_selection" <<< "2"
   assert_equal "$menu_selection" "option1"
 }
 

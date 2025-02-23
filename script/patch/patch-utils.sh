@@ -127,27 +127,7 @@ __revert_patch() {
 __line_is_valid() {
   local line="$1"
 
-  if __line_is_empty "$line" || __line_is_comment "$line"; then
-    return 1
-  fi
-
-  return 0
-}
-
-__line_is_empty() {
-  local line="$1"
-
-  if [[ -n $line ]]; then
-    return 1
-  fi
-
-  return 0
-}
-
-__line_is_comment() {
-  local line="$1"
-
-  if [[ $line != \#* ]]; then
+  if [[ -z "$line" ]] || [[ "$line" == \#* ]]; then
     return 1
   fi
 

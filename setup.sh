@@ -27,6 +27,17 @@ main() {
     fi
   done
 
+  run_and_log "__install $setup_directory $profile ${system[*]}"
+
+  return 0
+}
+
+# shellcheck disable=SC2317
+__install() {
+  local setup_directory="$1"
+  local profile="$2"
+  local -a system=("${@:3}")
+
   local system_part_directory="$setup_directory"
   for system_part in "${system[@]}"; do
     system_part_directory+="/$system_part"

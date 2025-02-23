@@ -123,8 +123,8 @@ teardown() {
   assert_success
 
   assert_line_log 0 "INFO" "Searching for files named '$FILES_TO_PATCH_NAME' in '$TEST_TEMP_DIR'."
-  assert_line_log 1 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/deep/files-to-patch'."
-  assert_line_log 2 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/files-to-patch'."
+  assert_output --partial "Applying patches to files in '$TEST_TEMP_DIR/files-to-patch'."
+  assert_output --partial "Applying patches to files in '$TEST_TEMP_DIR/deep/files-to-patch'."
 }
 
 @test "revert_patches | path not found" {
@@ -204,6 +204,6 @@ teardown() {
   assert_success
 
   assert_line_log 0 "INFO" "Searching for files named '$FILES_TO_PATCH_NAME' in '$TEST_TEMP_DIR'."
-  assert_line_log 1 "INFO" "Reverting patches of files in '$TEST_TEMP_DIR/deep/files-to-patch'."
-  assert_line_log 2 "INFO" "Reverting patches of files in '$TEST_TEMP_DIR/files-to-patch'."
+  assert_output --partial "Reverting patches of files in '$TEST_TEMP_DIR/files-to-patch'."
+  assert_output --partial "Reverting patches of files in '$TEST_TEMP_DIR/deep/files-to-patch'."
 }

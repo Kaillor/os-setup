@@ -24,7 +24,7 @@ main() {
 
   local path="$1"
 
-  apply_patches "$path"
+  run_and_log "apply_patches $path"
 
   return 0
 }

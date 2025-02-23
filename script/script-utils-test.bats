@@ -3,11 +3,12 @@ load "../test/test-utils.sh"
 
 setup() {
   load "./script-utils.sh"
-  cp -r "$ROOT_DIRECTORY/test/resources/script-utils" "/tmp"
+  TEST_TEMP_DIR="$(temp_make)"
+  cp -r "$ROOT_DIRECTORY/test/resources/script-utils" "$TEST_TEMP_DIR"
 }
 
 teardown() {
-  rm -r "/tmp/script-utils"
+  temp_del "$TEST_TEMP_DIR"
 }
 
 @test "info" {
@@ -29,11 +30,11 @@ teardown() {
 }
 
 @test "setup_menu | exit" {
-  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" 'setup_menu "Menu label" "/tmp/script-utils/setup-menu" "menu_selection" <<< "exit"' 0
+  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" "setup_menu \"Menu label\" \"$TEST_TEMP_DIR/script-utils/setup-menu\" \"menu_selection\" <<< \"exit\"" 0
 }
 
 @test "setup_menu | selection | output" {
-  run setup_menu "Menu label" "/tmp/script-utils/setup-menu" "menu_selection" <<< "2"
+  run setup_menu "Menu label" "$TEST_TEMP_DIR/script-utils/setup-menu" "menu_selection" <<< "2"
   assert_success
   assert_output "Menu label:
  1. option0
@@ -44,12 +45,12 @@ Type 'exit' to quit."
 
 @test "setup_menu | selection | variable set" {
   local menu_selection
-  setup_menu "Menu label" "/tmp/script-utils/setup-menu" "menu_selection" <<< "2"
+  setup_menu "Menu label" "$TEST_TEMP_DIR/script-utils/setup-menu" "menu_selection" <<< "2"
   assert_equal "$menu_selection" "option1"
 }
 
 @test "menu | exit" {
-  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" 'menu "Menu label" "options" "selection" <<< "exit"' 0
+  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" "menu \"Menu label\" \"options\" \"selection\" <<< \"exit\"" 0
 }
 
 @test "menu | selection | output" {

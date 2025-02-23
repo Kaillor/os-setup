@@ -10,7 +10,8 @@ main() {
 
   local setup_directory="$script_directory/setup"
   local -a system
-  source "$setup_directory/setup.sh" "system"
+  source "$setup_directory/setup.sh"
+  setup "system"
 
   while true; do
     printf "Profile: %s\n" "$profile"

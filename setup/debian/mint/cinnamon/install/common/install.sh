@@ -2,8 +2,9 @@
 main() {
   local script_directory
   script_directory="$(dirname "${BASH_SOURCE[0]}")"
+  source "$script_directory/../../../../../../script/patch/patch-utils.sh"
 
-  bash "$script_directory/../../../../../../script/patch/apply-patches.sh" "$script_directory/patches"
+  apply_patches "$script_directory/patches"
 
   return 0
 }

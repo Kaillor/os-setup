@@ -19,6 +19,15 @@ assert_exit() {
   return 0
 }
 
+assert_file_count() {
+  local directory="$1"
+  local expected_count="$2"
+
+  assert_equal "$(find "$directory" -maxdepth 1 -type f | wc -l)" "$expected_count"
+
+  return 0
+}
+
 assert_line_log() {
   local -i index="$1"
   local level="$2"
@@ -37,10 +46,12 @@ assert_status() {
   return 0
 }
 
-count_files() {
-  local directory="$1"
+replace_all_in_file() {
+  local replace="$1"
+  local replacement="$2"
+  local file="$3"
 
-  find "$directory" -maxdepth 1 -type f | wc -l
+  sed -i "s|$replace|$replacement|g" "$file"
 
   return 0
 }

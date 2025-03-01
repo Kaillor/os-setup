@@ -2,16 +2,72 @@
 load "../test/test-utils.sh"
 
 ORIGINAL_DIRECTORY="$ROOT_DIRECTORY/test/resources/script-utils"
+SCRIPT_UNDER_TEST="$BATS_TEST_DIRNAME/script-utils.sh"
 
 declare stderr
 
 setup() {
-  load "./script-utils.sh"
+  load "$SCRIPT_UNDER_TEST"
   TEST_TEMP_DIR="$(temp_make)"
 }
 
 teardown() {
   temp_del "$TEST_TEMP_DIR"
+}
+
+@test "require_sudo | authenticated" {
+  run require_sudo
+  assert_success
+  assert_output ""
+}
+
+@test "require_sudo | not authenticated | success" {
+  # shellcheck disable=SC2317
+  sudo() {
+    if [[ "$1" == "-n" && "$2" == "true" ]]; then
+      return 1
+    fi
+    if [[ "$1" == "-v" ]]; then
+      return 0
+    fi
+    printf "Unexpected arguments for 'sudo': %s" "$*"
+    exit 255
+  }
+
+  run require_sudo
+  assert_success
+  assert_output "This script requires root privileges. Please authenticate."
+}
+
+@test "require_sudo | not authenticated | fail | output" {
+  sudo() {
+    if [[ "$1" == "-n" && "$2" == "true" ]]; then
+      return 1
+    fi
+    if [[ "$1" == "-v" ]]; then
+      return 1
+    fi
+    printf "Unexpected arguments for 'sudo': %s" "$*"
+    exit 255
+  }
+
+  run require_sudo
+  assert_status 1
+  assert_output "This script requires root privileges. Please authenticate."
+}
+
+@test "require_sudo | not authenticated | fail | exit" {
+  assert_exit "$SCRIPT_UNDER_TEST" "sudo() {
+  if [[ \"\$1\" == \"-n\" && \"\$2\" == \"true\" ]]; then
+    return 1
+  fi
+  if [[ \"\$1\" == \"-v\" ]]; then
+    return 1
+  fi
+  printf \"Unexpected arguments for 'sudo': %s\" \"\$*\"
+  exit 255
+}
+require_sudo" 1
 }
 
 @test "info" {
@@ -57,7 +113,7 @@ message 2"
 @test "setup_menu | exit" {
   cp -r "$ORIGINAL_DIRECTORY/." "$TEST_TEMP_DIR"
 
-  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" "setup_menu \"Menu label\" \"$TEST_TEMP_DIR/setup-menu\" \"menu_selection\" <<< \"exit\"" 0
+  assert_exit "$SCRIPT_UNDER_TEST" "setup_menu \"Menu label\" \"$TEST_TEMP_DIR/setup-menu\" \"menu_selection\" <<< \"exit\"" 0
 }
 
 @test "setup_menu | selection | output" {
@@ -81,7 +137,7 @@ Type 'exit' to quit."
 }
 
 @test "menu | exit" {
-  assert_exit "$ROOT_DIRECTORY/script/script-utils.sh" "menu \"Menu label\" \"options\" \"selection\" <<< \"exit\"" 0
+  assert_exit "$SCRIPT_UNDER_TEST" "menu \"Menu label\" \"options\" \"selection\" <<< \"exit\"" 0
 }
 
 @test "menu | selection | output" {

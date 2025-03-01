@@ -15,12 +15,17 @@ usage() {
 }
 
 main() {
-  source "$(dirname "${BASH_SOURCE[0]}")/patch-utils.sh"
+  local script_directory
+  script_directory="$(dirname "${BASH_SOURCE[0]}")"
+  source "$script_directory/../script-utils.sh"
+  source "$script_directory/patch-utils.sh"
 
   if [[ ! $# -eq 1 ]]; then
     usage
     return 2
   fi
+
+  require_sudo
 
   local path="$1"
 

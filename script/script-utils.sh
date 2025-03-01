@@ -1,4 +1,15 @@
 #!/bin/bash
+require_sudo() {
+  if ! sudo -n true 2> /dev/null; then
+    printf "This script requires root privileges. Please authenticate.\n"
+    if ! sudo -v; then
+      exit 1
+    fi
+  fi
+
+  return 0
+}
+
 info() {
   local message="$1"
 

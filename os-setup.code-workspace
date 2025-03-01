@@ -29,6 +29,9 @@
     ]
   },
   "settings": {
+    "search.exclude": {
+      "**/bats": true
+    },
     "prettier.proseWrap": "always",
     "shellformat.useEditorConfig": true,
     "[jsonc]": {

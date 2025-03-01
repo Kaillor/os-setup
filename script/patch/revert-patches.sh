@@ -22,7 +22,7 @@ main() {
 
   local path="$1"
 
-  revert_patches "$path"
+  run_and_log "revert_patches $path"
 
   return 0
 }

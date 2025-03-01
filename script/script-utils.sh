@@ -10,7 +10,7 @@ info() {
 warning() {
   local message="$1"
 
-  __print_log "\e[33mWARNING\e[0m" "$message"
+  __print_log "\e[33mWARNING\e[0m" "$message" >&2
 
   return 0
 }
@@ -18,7 +18,7 @@ warning() {
 error() {
   local message="$1"
 
-  __print_log "\e[31mERROR\e[0m" "$message"
+  __print_log "\e[31mERROR\e[0m" "$message" >&2
 
   return 0
 }
@@ -27,7 +27,20 @@ __print_log() {
   local level="$1"
   local message="$2"
 
-  printf "[%s] [%b] %s\n" "$(date '+%Y-%m-%d %H:%M:%S.%3N')" "$level" "$message"
+  printf "[%s] [%b] %s\n" "$(date "+%Y-%m-%d %H:%M:%S.%3N")" "$level" "$message"
+
+  return 0
+}
+
+run_and_log() {
+  local command="$1"
+
+  local running_script
+  running_script="$(basename "${BASH_SOURCE[1]}" | sed "s/\.[^.]*$//")"
+  local log_file
+  log_file="$(date "+%Y-%m-%d_%H:%M:%S")_$running_script.log"
+
+  eval "$command" 2>&1 | tee >(sed 's/\x1b\[[0-9;]*m//g' > "$log_file")
 
   return 0
 }

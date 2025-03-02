@@ -4,6 +4,8 @@ main() {
   script_directory="$(dirname "${BASH_SOURCE[0]}")"
   source "$script_directory/script/script-utils.sh"
 
+  require_sudo
+
   local -a profiles=("personal" "axon-ivy")
   local profile
   menu "Profile" "profiles" "profile"

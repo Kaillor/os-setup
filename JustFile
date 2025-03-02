@@ -1,4 +1,5 @@
 @ci:
+  sudo -v
   printf "Run CI\n"
   just test && just shellcheck && just shellharden-check && just format-check
 @format-apply:
@@ -17,5 +18,6 @@
   printf "Find vulnerabilities\n"
   find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*" -print0 | xargs -0 shellharden --check
 @test:
+  sudo -v
   printf "Run tests\n"
   sudo BATS_TEST_TIMEOUT=5 "./test/bats/core/bin/bats" -r "./script"

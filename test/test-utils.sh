@@ -19,11 +19,28 @@ assert_exit() {
   return 0
 }
 
+assert_file_content_equals() {
+  local file="$1"
+  local expected_content="$2"
+
+  assert_equal "$(cat "$file")" "$expected_content"
+
+  return 0
+}
+
 assert_file_count() {
   local directory="$1"
   local expected_count="$2"
 
   assert_equal "$(find "$directory" -maxdepth 1 -type f | wc -l)" "$expected_count"
+
+  return 0
+}
+
+assert_file_empty_script() {
+  local file="$1"
+
+  assert_file_content_equals "$file" "#!/bin/bash"
 
   return 0
 }
@@ -70,6 +87,28 @@ replace_all_in_file() {
   local file="$3"
 
   sed -i "s|$replace|$replacement|g" "$file"
+
+  return 0
+}
+
+run_script_with_mocked_commands() {
+  local script="$1"
+  local -a commands_to_mock=("${@:2}")
+
+  local run_command=""
+  for command in "${commands_to_mock[@]}"; do
+    run_command+="$command() {
+  printf \"MOCK: %s\" \"$command\"
+  for argument in \"\$@\"; do
+    printf \" \\\"%s\\\"\" \"\$argument\"
+  done
+  printf \"\\n\"
+  return 0
+}
+"
+  done
+  run_command+="eval \"\$(cat \"$script\")\""
+  run bash -c "$run_command"
 
   return 0
 }

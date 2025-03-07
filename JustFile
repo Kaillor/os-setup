@@ -10,13 +10,13 @@
   shfmt -d .
 @shellcheck:
   printf "Find bugs\n"
-  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*" -print0 | xargs -0 shellcheck
+  shellcheck $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
 @shellharden-apply:
   printf "Fix vulnerabilities\n"
-  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*" -print0 | xargs -0 shellharden --replace
+  shellharden --replace $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
 @shellharden-check:
   printf "Find vulnerabilities\n"
-  find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*" -print0 | xargs -0 shellharden --check
+  shellharden --check $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
 @test:
   sudo -v
   printf "Run tests\n"

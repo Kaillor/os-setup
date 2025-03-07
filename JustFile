@@ -20,4 +20,4 @@
 @test:
   sudo -v
   printf "Run tests\n"
-  sudo BATS_TEST_TIMEOUT=5 "./test/bats/core/bin/bats" -r "./script"
+  BATS_TEST_TIMEOUT=5 "./test/bats/core/bin/bats" $(find . -name "*.bats" -a ! -path "./test/bats/*")

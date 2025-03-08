@@ -1,23 +1,29 @@
+export BATS_TEST_TIMEOUT := "5"
+
 @ci:
   sudo -v
-  printf "Run CI\n"
-  just test && just shellcheck && just shellharden-check && just format-check
+  printf "Run tests\n"
+  just test
+  printf "Find bugs\n"
+  just shellcheck
+  printf "Find vulnerabilities\n"
+  just shellharden-check
+  printf "Check format\n"
+  just format-check
 @format-apply:
-  printf "Fix format\n"
   shfmt -w .
 @format-check:
-  printf "Check format\n"
   shfmt -d .
 @shellcheck:
-  printf "Find bugs\n"
   shellcheck $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
 @shellharden-apply:
-  printf "Fix vulnerabilities\n"
   shellharden --replace $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
 @shellharden-check:
-  printf "Find vulnerabilities\n"
   shellharden --check $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
-@test:
+@test file="":
   sudo -v
-  printf "Run tests\n"
-  BATS_TEST_TIMEOUT=5 "./test/bats/core/bin/bats" $(find . -name "*.bats" -a ! -path "./test/bats/*")
+  if [ -n "{{file}}" ]; then \
+    "./test/bats/core/bin/bats" "{{file}}"; \
+  else \
+    "./test/bats/core/bin/bats" $(find . -name "*.bats" -a ! -path "./test/bats/*"); \
+  fi

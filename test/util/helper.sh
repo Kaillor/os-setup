@@ -8,6 +8,30 @@ line_log_regex() {
   return 0
 }
 
+mock_command() {
+  local command="$1"
+
+  eval "$(mock_command_code "$command")"
+
+  return 0
+}
+
+mock_command_code() {
+  local command="$1"
+
+  printf "%s() {
+  printf \"MOCK: %%s\" \"%s\"
+  for argument in \"\$@\"; do
+    printf \" \\\\\"%%s\\\\\"\" \"\$argument\"
+  done
+  printf \"\\\\n\"
+  return 0
+}
+" "$command" "$command"
+
+  return 0
+}
+
 replace_all_in_file() {
   local replace="$1"
   local replacement="$2"

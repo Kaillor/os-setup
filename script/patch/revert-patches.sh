@@ -13,10 +13,7 @@ usage() {
 }
 
 main() {
-  local script_directory
-  script_directory="$(dirname "${BASH_SOURCE[0]}")"
-  source "$script_directory/../script-util.sh"
-  source "$script_directory/patch-util.sh"
+  source "$(dirname "${BASH_SOURCE[0]}")/../script-util.sh"
 
   if [[ ! $# -eq 1 ]]; then
     usage

@@ -6,7 +6,7 @@ ORIGINAL_DIRECTORY_APPLY_PATCHES="$ORIGINAL_DIRECTORY/apply-patches"
 ORIGINAL_DIRECTORY_REVERT_PATCHES="$ORIGINAL_DIRECTORY/revert-patches"
 
 setup() {
-  load "./patch-util.sh"
+  load "./../script-util.sh"
   TEST_TEMP_DIR="$(temp_make)"
 }
 

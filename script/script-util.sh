@@ -1,4 +1,6 @@
 #!/bin/bash
+source "$(dirname "${BASH_SOURCE[0]}")/patch/patch-util.sh"
+
 require_sudo() {
   if ! sudo -n true 2> /dev/null; then
     printf "This script requires root privileges. Please authenticate.\n"

@@ -1,5 +1,5 @@
 #!/bin/bash
-source "$(dirname "${BASH_SOURCE[0]}")/../script-utils.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../script-util.sh"
 
 export FILES_TO_PATCH_NAME="files-to-patch"
 export BACKUP_DIRECTORY_NAME="backups"

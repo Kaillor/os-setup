@@ -1,7 +1,7 @@
 #!/bin/bash
 load "../../test/test-util.sh"
 
-ORIGINAL_DIRECTORY="$ROOT_DIRECTORY/test/resources/patch/patch-util"
+ORIGINAL_DIRECTORY="$TEST_RESOURCES_DIRECTORY/patch/patch-util"
 ORIGINAL_DIRECTORY_APPLY_PATCHES="$ORIGINAL_DIRECTORY/apply-patches"
 ORIGINAL_DIRECTORY_REVERT_PATCHES="$ORIGINAL_DIRECTORY/revert-patches"
 

@@ -19,7 +19,7 @@ teardown() {
 }
 
 @test "main | apply patches" {
-  cp -r "$ROOT_DIRECTORY/test/resources/patch/apply-patches/." "$TEST_TEMP_DIR"
+  cp -r "$TEST_RESOURCES_DIRECTORY/patch/apply-patches/." "$TEST_TEMP_DIR"
 
   cd "$TEST_TEMP_DIR"
   run "$SCRIPT_UNDER_TEST" "$TEST_TEMP_DIR"

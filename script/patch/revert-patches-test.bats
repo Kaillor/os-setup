@@ -19,7 +19,7 @@ teardown() {
 }
 
 @test "main | revert patches" {
-  cp -r "$ROOT_DIRECTORY/test/resources/patch/revert-patches/." "$TEST_TEMP_DIR"
+  cp -r "$TEST_RESOURCES_DIRECTORY/patch/revert-patches/." "$TEST_TEMP_DIR"
 
   cd "$TEST_TEMP_DIR"
   run "$SCRIPT_UNDER_TEST" "$TEST_TEMP_DIR"

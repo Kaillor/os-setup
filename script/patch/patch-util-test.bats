@@ -1,12 +1,12 @@
 #!/bin/bash
-load "../../test/test-utils.sh"
+load "../../test/test-util.sh"
 
-ORIGINAL_DIRECTORY="$ROOT_DIRECTORY/test/resources/patch/patch-utils"
+ORIGINAL_DIRECTORY="$ROOT_DIRECTORY/test/resources/patch/patch-util"
 ORIGINAL_DIRECTORY_APPLY_PATCHES="$ORIGINAL_DIRECTORY/apply-patches"
 ORIGINAL_DIRECTORY_REVERT_PATCHES="$ORIGINAL_DIRECTORY/revert-patches"
 
 setup() {
-  load "./patch-utils.sh"
+  load "./patch-util.sh"
   TEST_TEMP_DIR="$(temp_make)"
 }
 

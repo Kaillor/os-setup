@@ -1,8 +1,8 @@
 #!/bin/bash
-load "../test/test-utils.sh"
+load "../test/test-util.sh"
 
-ORIGINAL_DIRECTORY="$ROOT_DIRECTORY/test/resources/script-utils"
-SCRIPT_UNDER_TEST="$BATS_TEST_DIRNAME/script-utils.sh"
+ORIGINAL_DIRECTORY="$ROOT_DIRECTORY/test/resources/script-util"
+SCRIPT_UNDER_TEST="$BATS_TEST_DIRNAME/script-util.sh"
 
 declare stderr
 

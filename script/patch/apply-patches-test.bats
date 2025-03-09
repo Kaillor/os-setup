@@ -1,10 +1,10 @@
 #!/bin/bash
-load "../../test/test-utils.sh"
+load "../../test/test-util.sh"
 
 SCRIPT_UNDER_TEST="$BATS_TEST_DIRNAME/apply-patches.sh"
 
 setup() {
-  load "./patch-utils.sh"
+  load "./patch-util.sh"
   TEST_TEMP_DIR="$(temp_make)"
 }
 

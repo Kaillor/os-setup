@@ -15,7 +15,7 @@ teardown() {
 }
 
 @test "apply_patches | path not found" {
-  run apply_patches "$TEST_TEMP_DIR/not-found"
+  run "apply_patches" "$TEST_TEMP_DIR/not-found"
   assert_status 1
   assert_line_log 0 "ERROR" "Path '$TEST_TEMP_DIR/not-found' does not exist."
 }
@@ -24,7 +24,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_APPLY_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/invalid-lines_empty"
 
-  run apply_patches "$TEST_TEMP_DIR/invalid-lines_empty"
+  run "apply_patches" "$TEST_TEMP_DIR/invalid-lines_empty"
   assert_success
 
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/invalid-lines_empty'."
@@ -47,7 +47,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_APPLY_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/invalid-lines_comments"
 
-  run apply_patches "$TEST_TEMP_DIR/invalid-lines_comments"
+  run "apply_patches" "$TEST_TEMP_DIR/invalid-lines_comments"
   assert_success
 
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/invalid-lines_comments'."
@@ -70,7 +70,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_APPLY_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/missing-files_files-to-patch"
 
-  run apply_patches "$TEST_TEMP_DIR/missing-files_files-to-patch"
+  run "apply_patches" "$TEST_TEMP_DIR/missing-files_files-to-patch"
   assert_success
 
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/missing-files_files-to-patch'."
@@ -95,7 +95,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_APPLY_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/missing-files_patch-files"
 
-  run apply_patches "$TEST_TEMP_DIR/missing-files_patch-files"
+  run "apply_patches" "$TEST_TEMP_DIR/missing-files_patch-files"
   assert_success
 
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/missing-files_patch-files'."
@@ -119,7 +119,7 @@ teardown() {
 @test "apply_patches | find in directory" {
   cp -r "$ORIGINAL_DIRECTORY_APPLY_PATCHES/find-files-to-patch/." "$TEST_TEMP_DIR"
 
-  run apply_patches "$TEST_TEMP_DIR"
+  run "apply_patches" "$TEST_TEMP_DIR"
   assert_success
 
   assert_line_log 0 "INFO" "Searching for files named '$FILES_TO_PATCH_NAME' in '$TEST_TEMP_DIR'."
@@ -137,7 +137,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_REVERT_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/invalid-lines_empty"
 
-  run revert_patches "$TEST_TEMP_DIR/invalid-lines_empty"
+  run "revert_patches" "$TEST_TEMP_DIR/invalid-lines_empty"
   assert_success
 
   assert_line_log 0 "INFO" "Reverting patches of files in '$TEST_TEMP_DIR/invalid-lines_empty'."
@@ -152,7 +152,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_REVERT_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/invalid-lines_comments"
 
-  run revert_patches "$TEST_TEMP_DIR/invalid-lines_comments"
+  run "revert_patches" "$TEST_TEMP_DIR/invalid-lines_comments"
   assert_success
 
   assert_line_log 0 "INFO" "Reverting patches of files in '$TEST_TEMP_DIR/invalid-lines_comments'."
@@ -167,7 +167,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_REVERT_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/missing-files_files-to-revert"
 
-  run revert_patches "$TEST_TEMP_DIR/missing-files_files-to-revert"
+  run "revert_patches" "$TEST_TEMP_DIR/missing-files_files-to-revert"
   assert_success
 
   assert_line_log 0 "INFO" "Reverting patches of files in '$TEST_TEMP_DIR/missing-files_files-to-revert'."
@@ -184,7 +184,7 @@ teardown() {
   cp -r "$ORIGINAL_DIRECTORY_REVERT_PATCHES/." "$TEST_TEMP_DIR"
   replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/missing-files_backup-files"
 
-  run revert_patches "$TEST_TEMP_DIR/missing-files_backup-files"
+  run "revert_patches" "$TEST_TEMP_DIR/missing-files_backup-files"
   assert_success
 
   assert_line_log 0 "INFO" "Reverting patches of files in '$TEST_TEMP_DIR/missing-files_backup-files'."
@@ -200,7 +200,7 @@ teardown() {
 @test "revert_patches | find in directory" {
   cp -r "$ORIGINAL_DIRECTORY_REVERT_PATCHES/find-files-to-revert/." "$TEST_TEMP_DIR"
 
-  run revert_patches "$TEST_TEMP_DIR"
+  run "revert_patches" "$TEST_TEMP_DIR"
   assert_success
 
   assert_line_log 0 "INFO" "Searching for files named '$FILES_TO_PATCH_NAME' in '$TEST_TEMP_DIR'."

@@ -7,7 +7,7 @@ SCRIPT_UNDER_TEST="$BATS_TEST_DIRNAME/script-util.sh"
 declare stderr
 
 setup() {
-  load "$SCRIPT_UNDER_TEST"
+  load "./script-util.sh"
   TEST_TEMP_DIR="$(temp_make)"
 }
 

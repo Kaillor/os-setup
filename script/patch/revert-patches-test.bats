@@ -1,10 +1,10 @@
 #!/bin/bash
 load "../../test/test-util.sh"
+load "./patch-util.sh"
 
 SCRIPT_UNDER_TEST="$BATS_TEST_DIRNAME/revert-patches.sh"
 
 setup() {
-  load "./patch-util.sh"
   TEST_TEMP_DIR="$(temp_make)"
 }
 

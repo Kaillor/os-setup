@@ -16,7 +16,7 @@ teardown() {
 }
 
 @test "require_sudo | authenticated" {
-  run require_sudo
+  run "require_sudo"
   assert_success
   assert_output ""
 }
@@ -34,7 +34,7 @@ teardown() {
     exit 255
   }
 
-  run require_sudo
+  run "require_sudo"
   assert_success
   assert_output "This script requires root privileges. Please authenticate."
 }
@@ -51,7 +51,7 @@ teardown() {
     exit 255
   }
 
-  run require_sudo
+  run "require_sudo"
   assert_status 1
   assert_output "This script requires root privileges. Please authenticate."
 }
@@ -72,7 +72,7 @@ require_sudo" 1
 
 @test "info" {
   bats_require_minimum_version 1.5.0
-  run --separate-stderr info "info message"
+  run --separate-stderr "info" "info message"
   assert_success
   assert_regex "$output" "$(line_log_regex "INFO" "info message")"
   assert_equal "$stderr" ""
@@ -80,7 +80,7 @@ require_sudo" 1
 
 @test "warning" {
   bats_require_minimum_version 1.5.0
-  run --separate-stderr warning "warning message"
+  run --separate-stderr "warning" "warning message"
   assert_success
   assert_equal "$output" ""
   assert_regex "$stderr" "$(line_log_regex "WARNING" "warning message")"
@@ -88,7 +88,7 @@ require_sudo" 1
 
 @test "error" {
   bats_require_minimum_version 1.5.0
-  run --separate-stderr error "error message"
+  run --separate-stderr "error" "error message"
   assert_success
   assert_equal "$output" ""
   assert_regex "$stderr" "$(line_log_regex "ERROR" "error message")"
@@ -119,7 +119,7 @@ message 2"
 @test "setup_menu | selection | output" {
   cp -r "$ORIGINAL_DIRECTORY/." "$TEST_TEMP_DIR"
 
-  run setup_menu "Menu label" "$TEST_TEMP_DIR/setup-menu" "menu_selection" <<< "2"
+  run "setup_menu" "Menu label" "$TEST_TEMP_DIR/setup-menu" "menu_selection" <<< "2"
   assert_success
   assert_output "Menu label:
  1. option0
@@ -142,7 +142,7 @@ Type 'exit' to quit."
 
 @test "menu | selection | output" {
   local options=("option0" "option1" "option2")
-  run menu "Menu label" "options" "selection" <<< "2"
+  run "menu" "Menu label" "options" "selection" <<< "2"
   assert_success
   assert_output "Menu label:
  1. option0
@@ -160,7 +160,7 @@ Type 'exit' to quit."
 
 @test "menu | selection | invalid | output" {
   local options=("option0" "option1" "option2")
-  run menu "Menu label" "options" "selection" <<< $'a\n0\n4\n2'
+  run "menu" "Menu label" "options" "selection" <<< $'a\n0\n4\n2'
   assert_success
   assert_output "Menu label:
  1. option0

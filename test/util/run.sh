@@ -18,14 +18,7 @@ run_script_with_mocked_commands() {
 
   local run_command=""
   for command in "${commands_to_mock[@]}"; do
-    run_command+="$command() {
-  printf \"MOCK: %s\" \"$command\"
-  for argument in \"\$@\"; do
-    printf \" \\\"%s\\\"\" \"\$argument\"
-  done
-  printf \"\\n\"
-  return 0
-}
+    run_command+="$(mock_command_code "$command")
 "
   done
   run_command+="eval \"\$(cat \"$script\")\""

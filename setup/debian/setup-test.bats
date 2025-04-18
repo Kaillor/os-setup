@@ -6,7 +6,7 @@ setup() {
   load "./setup.sh"
 }
 
-@test "debian | output and continue with distribution" {
+@test "debian | output | continue with distribution" {
   mock_command "source"
   mock_command "mint"
 

@@ -18,6 +18,7 @@ mock_command() {
 
 mock_command_code() {
   local command="$1"
+  local custom_code="$2"
 
   printf "%s() {
   printf \"MOCK: %%s\" \"%s\"
@@ -25,6 +26,7 @@ mock_command_code() {
     printf \" \\\\\"%%s\\\\\"\" \"\$argument\"
   done
   printf \"\\\\n\"
+  $custom_code
   return 0
 }
 " "$command" "$command"

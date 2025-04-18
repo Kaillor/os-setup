@@ -41,26 +41,27 @@ __install() {
   local -a system=("${@:3}")
 
   local system_part_directory="$setup_directory"
+  local -a install_scripts
   for system_part in "${system[@]}"; do
     system_part_directory+="/$system_part"
+    install_scripts+=("$system_part_directory/install/common/install.sh")
+    install_scripts+=("$system_part_directory/install/$profile/install.sh")
+  done
 
-    local system_part_directory_install_common="$system_part_directory/install/common/install.sh"
-    if [[ -f $system_part_directory_install_common ]]; then
-      info "Executing install script '$system_part_directory_install_common'."
-      bash "$system_part_directory_install_common"
-    else
-      error "Install script '$system_part_directory_install_common' not found."
-      return 1
+  local -a missing_install_scripts
+  for install_script in "${install_scripts[@]}"; do
+    if [[ ! -f $install_script ]]; then
+      missing_install_scripts+=("$install_script")
     fi
+  done
+  if [[ "${#missing_install_scripts[@]}" -gt 0 ]]; then
+    error "The following install scripts are missing: '${missing_install_scripts[*]}'."
+    return 1
+  fi
 
-    local system_part_directory_install_profile="$system_part_directory/install/$profile/install.sh"
-    if [[ -f $system_part_directory_install_profile ]]; then
-      info "Executing install script '$system_part_directory_install_profile'."
-      bash "$system_part_directory_install_profile"
-    else
-      error "Install script '$system_part_directory_install_profile' not found."
-      return 1
-    fi
+  for install_script in "${install_scripts[@]}"; do
+    info "Executing install script '$install_script'."
+    bash "$install_script"
   done
 
   return 0

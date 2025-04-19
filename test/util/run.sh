@@ -3,10 +3,14 @@ run_script_with_mocked_commands() {
   local script
   local -a script_arguments
   local -a commands_to_mock
+  local -a custom_code
+  local user_input
 
-  while getopts ":a:m:s:" "opt"; do
+  while getopts ":a:c:i:m:s:" "opt"; do
     case "$opt" in
       a) script_arguments+=("$OPTARG") ;;
+      c) custom_code+=("$OPTARG") ;;
+      i) user_input="$OPTARG" ;;
       m) commands_to_mock+=("$OPTARG") ;;
       s) script="$OPTARG" ;;
       *)
@@ -21,8 +25,12 @@ run_script_with_mocked_commands() {
     run_command+="$(mock_command_code "$command")
 "
   done
+  for code in "${custom_code[@]}"; do
+    run_command+="$code
+"
+  done
   run_command+="eval \"\$(cat \"$script\")\""
-  run bash -c "$run_command" "$script" "${script_arguments[@]}"
+  run bash -c "$run_command" "$script" "${script_arguments[@]}" <<< "$user_input"
 
   return 0
 }

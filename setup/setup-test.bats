@@ -6,7 +6,7 @@ setup() {
   load "./setup.sh"
 }
 
-@test "setup | output and continue with operating system" {
+@test "setup | output | continue with operating system" {
   mock_command "source"
   mock_command "debian"
 

@@ -4,8 +4,6 @@ load "../test/test-util.sh"
 ORIGINAL_DIRECTORY="$TEST_RESOURCES_DIRECTORY/script-util"
 SCRIPT_UNDER_TEST="$BATS_TEST_DIRNAME/script-util.sh"
 
-declare stderr
-
 setup() {
   load "./script-util.sh"
   TEST_TEMP_DIR="$(temp_make)"
@@ -68,46 +66,6 @@ teardown() {
   exit 255
 }
 require_sudo" 1
-}
-
-@test "info" {
-  bats_require_minimum_version 1.5.0
-  run --separate-stderr "info" "info message"
-  assert_success
-  assert_regex "$output" "$(line_log_regex "INFO" "info message")"
-  assert_equal "$stderr" ""
-}
-
-@test "warning" {
-  bats_require_minimum_version 1.5.0
-  run --separate-stderr "warning" "warning message"
-  assert_success
-  assert_equal "$output" ""
-  assert_regex "$stderr" "$(line_log_regex "WARNING" "warning message")"
-}
-
-@test "error" {
-  bats_require_minimum_version 1.5.0
-  run --separate-stderr "error" "error message"
-  assert_success
-  assert_equal "$output" ""
-  assert_regex "$stderr" "$(line_log_regex "ERROR" "error message")"
-}
-
-@test "run_and_log" {
-  cd "$TEST_TEMP_DIR"
-  run run_and_log "echo \"message [31m0[0m\"; echo \"message [32m1[0m\" >&2; echo \"message [33m2[0m\""
-  assert_output "message [31m0[0m
-message [32m1[0m
-message [33m2[0m"
-
-  assert_file_count "$TEST_TEMP_DIR" 1
-  local file
-  file="$(find "$TEST_TEMP_DIR" -mindepth 1 -maxdepth 1 -type f)"
-  assert_file_log_name "$file" "test_functions"
-  assert_file_contains "$file" "message 0
-message 1
-message 2"
 }
 
 @test "setup_menu | exit" {

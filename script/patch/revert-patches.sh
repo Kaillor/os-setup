@@ -1,16 +1,16 @@
 #!/bin/bash
 usage() {
-  printf "Usage: %s <path>\n" "$(basename "${BASH_SOURCE[0]}")"
-  printf "  path        Path that corresponds to a file containing a list of\n"
-  printf "              absolute file paths that need to be reverted, or a\n"
-  printf "              directory. If the path is a directory, all child\n"
-  printf "              directories are searched for files named\n"
-  printf "              '%s' which must contain a list of absolute\n" "$FILES_TO_PATCH_NAME"
-  printf "              file paths that need to be reverted. Corresponding patch\n"
-  printf "              files that must be reverted must be placed next to each\n"
-  printf "              file processed this way in a directory called '%s'\n" "$PATCH_DIRECTORY_NAME"
-  printf "              and have the same name as the file to be reverted plus\n"
-  printf "              the extension '.patch'.\n"
+  cat << EOF
+Usage: $(basename "${BASH_SOURCE[0]}") <path>
+  path        Path that corresponds to a file containing a list of absolute
+              file paths that need to be reverted, or a directory. If the path
+              is a directory, all child directories are searched for files
+              named '$FILES_TO_PATCH_NAME' which must contain a list of absolute file
+              paths that need to be reverted. Corresponding patch files that
+              must be reverted must be placed next to each file processed this
+              way in a directory called '$PATCH_DIRECTORY_NAME' and have the same name as the
+              file to be reverted plus the extension '.patch'.
+EOF
 }
 
 main() {

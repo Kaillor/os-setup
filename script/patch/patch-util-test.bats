@@ -29,9 +29,9 @@ teardown() {
 
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/invalid-lines_empty'."
   assert_line_log 1 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-0'."
-  assert_line --index 2 "patching file $TEST_TEMP_DIR/files/before-patch/file-0"
+  assert_line_log 2 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-0'."
   assert_line_log 3 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-1'."
-  assert_line --index 4 "patching file $TEST_TEMP_DIR/files/before-patch/file-1"
+  assert_line_log 4 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-1'."
 
   assert_file_count "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME" 2
   assert_exist "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME/file-0"
@@ -52,9 +52,9 @@ teardown() {
 
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/invalid-lines_comments'."
   assert_line_log 1 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-0'."
-  assert_line --index 2 "patching file $TEST_TEMP_DIR/files/before-patch/file-0"
+  assert_line_log 2 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-0'."
   assert_line_log 3 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-1'."
-  assert_line --index 4 "patching file $TEST_TEMP_DIR/files/before-patch/file-1"
+  assert_line_log 4 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-1'."
 
   assert_file_count "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME" 2
   assert_exist "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME/file-0"
@@ -75,11 +75,11 @@ teardown() {
 
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/missing-files_files-to-patch'."
   assert_line_log 1 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-0'."
-  assert_line --index 2 "patching file $TEST_TEMP_DIR/files/before-patch/file-0"
+  assert_line_log 2 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-0'."
   assert_line_log 3 "WARNING" "File to patch '$TEST_TEMP_DIR/non-existing-file-0' not found."
   assert_line_log 4 "WARNING" "File to patch '$TEST_TEMP_DIR/non-existing-file-1' not found."
   assert_line_log 5 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-1'."
-  assert_line --index 6 "patching file $TEST_TEMP_DIR/files/before-patch/file-1"
+  assert_line_log 6 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-1'."
 
   assert_file_count "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME" 2
   assert_exist "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME/file-0"
@@ -101,9 +101,9 @@ teardown() {
   assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/missing-files_patch-files'."
   assert_line_log 1 "ERROR" "Patch file '$TEST_TEMP_DIR/patches/file-2.patch' for file to patch '$TEST_TEMP_DIR/files/before-patch/file-2' not found."
   assert_line_log 2 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-0'."
-  assert_line --index 3 "patching file $TEST_TEMP_DIR/files/before-patch/file-0"
+  assert_line_log 3 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-0'."
   assert_line_log 4 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-1'."
-  assert_line --index 5 "patching file $TEST_TEMP_DIR/files/before-patch/file-1"
+  assert_line_log 5 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-1'."
   assert_line_log 6 "ERROR" "Patch file '$TEST_TEMP_DIR/patches/file-3.patch' for file to patch '$TEST_TEMP_DIR/files/before-patch/file-3' not found."
 
   assert_file_count "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME" 2

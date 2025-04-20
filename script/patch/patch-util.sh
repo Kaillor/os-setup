@@ -1,10 +1,8 @@
 #!/bin/bash
 export FILES_TO_PATCH_NAME="files-to-patch"
-export BACKUP_DIRECTORY_NAME="backups"
 export PATCH_DIRECTORY_NAME="patches"
 
 readonly FILES_TO_PATCH_NAME
-readonly BACKUP_DIRECTORY_NAME
 readonly PATCH_DIRECTORY_NAME
 
 apply_patches() {
@@ -32,7 +30,6 @@ __apply_patches() {
 
   local working_directory
   working_directory="$(dirname "$file_with_list_of_files_to_patch")"
-  mkdir -p "$working_directory/$BACKUP_DIRECTORY_NAME"
 
   while IFS= read -r "line"; do
     if __line_is_valid "$line"; then
@@ -59,12 +56,9 @@ __apply_patch() {
     return 1
   fi
 
-  info "Backing up file '$file_to_patch'."
-  cp "$file_to_patch" "$working_directory/$BACKUP_DIRECTORY_NAME"
-
   info "Patching file '$file_to_patch'."
   local patch_output
-  if ! patch_output="$(sudo patch -s "$file_to_patch" "$patch_file" 2>&1)"; then
+  if ! patch_output="$(sudo patch -s -b -N "$file_to_patch" "$patch_file" 2>&1)"; then
     error "Failed to patch file '$file_to_patch': $patch_output"
     return 1
   fi
@@ -113,16 +107,20 @@ __revert_patch() {
   local working_directory="$1"
   local file_to_revert="$2"
 
-  local backup_file
-  backup_file="$working_directory/$BACKUP_DIRECTORY_NAME/$(basename "$file_to_revert")"
+  local patch_file
+  patch_file="$working_directory/$PATCH_DIRECTORY_NAME/$(basename "$file_to_revert").patch"
 
-  if [[ ! -f $backup_file ]]; then
-    error "Backup file '$backup_file' for file to revert '$file_to_revert' not found."
+  if [[ ! -f $patch_file ]]; then
+    error "Patch file '$patch_file' for file to revert '$file_to_revert' not found."
     return 1
   fi
 
   info "Reverting file '$file_to_revert'."
-  cp "$backup_file" "$file_to_revert"
+  local patch_output
+  if ! patch_output="$(sudo patch -s -R "$file_to_revert" "$patch_file" 2>&1)"; then
+    error "Failed to revert file '$file_to_revert': $patch_output"
+    return 1
+  fi
 
   return 0
 }

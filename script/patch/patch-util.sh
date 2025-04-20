@@ -62,7 +62,8 @@ __apply_patch() {
   info "Backing up file '$file_to_patch'."
   cp "$file_to_patch" "$working_directory/$BACKUP_DIRECTORY_NAME"
 
-  sudo patch "$file_to_patch" "$patch_file"
+  info "Patching file '$file_to_patch'."
+  sudo patch -s "$file_to_patch" "$patch_file"
 
   return 0
 }

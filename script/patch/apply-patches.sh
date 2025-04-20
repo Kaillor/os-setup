@@ -10,8 +10,8 @@ usage() {
   printf "              files must be placed next to each file processed this\n"
   printf "              way in a directory called '%s' and have the same\n" "$PATCH_DIRECTORY_NAME"
   printf "              name as the file to be patched plus the extension\n"
-  printf "              '.patch'. The original files will be backed up in a\n"
-  printf "              directory called '%s' next to the file.\n" "$BACKUP_DIRECTORY_NAME"
+  printf "              '.patch'. The original files will be backed up in the\n"
+  printf "              original directory with the extension '.orig'.\n"
 }
 
 main() {

@@ -56,14 +56,18 @@ __apply_patch() {
 
   if [[ ! -f $patch_file ]]; then
     error "Patch file '$patch_file' for file to patch '$file_to_patch' not found."
-    return
+    return 1
   fi
 
   info "Backing up file '$file_to_patch'."
   cp "$file_to_patch" "$working_directory/$BACKUP_DIRECTORY_NAME"
 
   info "Patching file '$file_to_patch'."
-  sudo patch -s "$file_to_patch" "$patch_file"
+  local patch_output
+  if ! patch_output="$(sudo patch -s "$file_to_patch" "$patch_file" 2>&1)"; then
+    error "Failed to patch file '$file_to_patch': $patch_output"
+    return 1
+  fi
 
   return 0
 }
@@ -114,7 +118,7 @@ __revert_patch() {
 
   if [[ ! -f $backup_file ]]; then
     error "Backup file '$backup_file' for file to revert '$file_to_revert' not found."
-    return
+    return 1
   fi
 
   info "Reverting file '$file_to_revert'."

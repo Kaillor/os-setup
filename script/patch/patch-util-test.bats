@@ -114,6 +114,33 @@ teardown() {
 
   assert_files_equal "$TEST_TEMP_DIR/files/before-patch/file-0" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/after-patch/file-0"
   assert_files_equal "$TEST_TEMP_DIR/files/before-patch/file-1" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/after-patch/file-1"
+  assert_files_equal "$TEST_TEMP_DIR/files/before-patch/file-2" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/before-patch/file-2"
+  assert_files_equal "$TEST_TEMP_DIR/files/before-patch/file-3" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/before-patch/file-3"
+}
+
+@test "apply_patches | failed to patch file" {
+  cp -r "$ORIGINAL_DIRECTORY_APPLY_PATCHES/." "$TEST_TEMP_DIR"
+  replace_all_in_file "\$TEST_TEMP_DIR" "$TEST_TEMP_DIR" "$TEST_TEMP_DIR/patch-failed"
+
+  run "apply_patches" "$TEST_TEMP_DIR/patch-failed"
+  assert_success
+
+  assert_line_log 0 "INFO" "Applying patches to files in '$TEST_TEMP_DIR/patch-failed'."
+  assert_line_log 1 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-fail-0'."
+  assert_line_log 2 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-fail-0'."
+  assert_line_log 3 "ERROR" "Failed to patch file '$TEST_TEMP_DIR/files/before-patch/file-fail-0': patch: \*\*\*\* Only garbage was found in the patch input."
+  assert_line_log 4 "INFO" "Backing up file '$TEST_TEMP_DIR/files/before-patch/file-fail-1'."
+  assert_line_log 5 "INFO" "Patching file '$TEST_TEMP_DIR/files/before-patch/file-fail-1'."
+  assert_line_log 6 "ERROR" "Failed to patch file '$TEST_TEMP_DIR/files/before-patch/file-fail-1': patch: \*\*\*\* Only garbage was found in the patch input."
+
+  assert_file_count "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME" 2
+  assert_exist "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME/file-fail-0"
+  assert_exist "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME/file-fail-1"
+  assert_files_equal "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME/file-fail-0" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/before-patch/file-fail-0"
+  assert_files_equal "$TEST_TEMP_DIR/$BACKUP_DIRECTORY_NAME/file-fail-1" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/before-patch/file-fail-1"
+
+  assert_files_equal "$TEST_TEMP_DIR/files/before-patch/file-fail-0" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/before-patch/file-fail-0"
+  assert_files_equal "$TEST_TEMP_DIR/files/before-patch/file-fail-1" "$ORIGINAL_DIRECTORY_APPLY_PATCHES/files/before-patch/file-fail-1"
 }
 
 @test "apply_patches | find in directory" {

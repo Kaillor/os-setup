@@ -8,7 +8,7 @@ export BATS_TEST_TIMEOUT := "5"
   just shellcheck
   printf "Find vulnerabilities\n"
   just shellharden-check
-  printf "Check format\n"
+  printf "Check formatting\n"
   just format-check
 @format-apply:
   shfmt -w .

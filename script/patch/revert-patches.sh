@@ -10,11 +10,17 @@ Usage: $(basename "${BASH_SOURCE[0]}") <path>
               must be reverted must be placed next to each file processed this
               way in a directory called '$PATCH_DIRECTORY_NAME' and have the same name as the
               file to be reverted plus the extension '.patch'.
+  flags       -h, --help    Show this message and exit
 EOF
 }
 
 main() {
   source "$(dirname "${BASH_SOURCE[0]}")/../script-util.sh"
+
+  if has_help_flag "$@"; then
+    usage
+    return 0
+  fi
 
   if [[ ! $# -eq 1 ]]; then
     usage

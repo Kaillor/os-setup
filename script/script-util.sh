@@ -2,6 +2,18 @@
 source "$(dirname "${BASH_SOURCE[0]}")/log/log-util.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/patch/patch-util.sh"
 
+has_help_flag() {
+  for arg in "$@"; do
+    case "$arg" in
+      -h | --help)
+        return 0
+        ;;
+    esac
+  done
+
+  return 1
+}
+
 require_sudo() {
   if ! sudo -n true 2> /dev/null; then
     printf "This script requires root privileges. Please authenticate.\n"

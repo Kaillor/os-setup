@@ -11,11 +11,17 @@ Usage: $(basename "${BASH_SOURCE[0]}") <path>
               '$PATCH_DIRECTORY_NAME' and have the same name as the file to be patched plus
               the extension '.patch'. The original files will be backed up in
               the original directory with the extension '.orig'.
+  flags       -h, --help    Show this message and exit
 EOF
 }
 
 main() {
   source "$(dirname "${BASH_SOURCE[0]}")/../script-util.sh"
+
+  if has_help_flag "$@"; then
+    usage
+    return 0
+  fi
 
   if [[ ! $# -eq 1 ]]; then
     usage

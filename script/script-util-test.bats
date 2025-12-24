@@ -13,6 +13,21 @@ teardown() {
   temp_del "$TEST_TEMP_DIR"
 }
 
+@test "has_help_flag | no flag" {
+  run "has_help_flag" "argument1" "argument2"
+  assert_failure
+}
+
+@test "has_help_flag | -h flag" {
+  run "has_help_flag" "argument1" "-h" "argument2"
+  assert_success
+}
+
+@test "has_help_flag | --help flag" {
+  run "has_help_flag" "argument1" "--help" "argument2"
+  assert_success
+}
+
 @test "require_sudo | authenticated" {
   run "require_sudo"
   assert_success

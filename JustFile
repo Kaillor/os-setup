@@ -1,3 +1,5 @@
+set shell := ["bash", "-c"]
+
 export BATS_TEST_TIMEOUT := "5"
 
 @ci:
@@ -10,6 +12,8 @@ export BATS_TEST_TIMEOUT := "5"
   just shellharden-check
   printf "Check formatting\n"
   just format-check
+@integration-test:
+  source "./test/integration/test.sh" && run_tests
 @format-apply:
   shfmt -w .
 @format-check:
@@ -21,9 +25,4 @@ export BATS_TEST_TIMEOUT := "5"
 @shellharden-check:
   shellharden --check $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
 @test file="":
-  sudo -v
-  if [ -n "{{file}}" ]; then \
-    "./test/bats/core/bin/bats" "{{file}}"; \
-  else \
-    "./test/bats/core/bin/bats" $(find . -name "*.bats" -a ! -path "./test/bats/*"); \
-  fi
+  source "./test/test.sh" && run_tests "{{file}}"

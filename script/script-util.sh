@@ -33,10 +33,17 @@ setup_menu() {
 
   # shellcheck disable=SC2034
   local -a options
-  __child_directories "$directory" "options" "install"
+  setup_child_directories "$directory" "options"
   menu "$label" "options" "selection"
 
   return 0
+}
+
+setup_child_directories() {
+  local directory="$1"
+  # shellcheck disable=SC2034
+  local -n setup_child_directories="$2"
+  __child_directories "$directory" "setup_child_directories" "install"
 }
 
 __child_directories() {

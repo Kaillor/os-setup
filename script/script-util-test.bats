@@ -35,7 +35,7 @@ teardown() {
 }
 
 @test "require_sudo | not authenticated | success" {
-  # shellcheck disable=SC2317
+  # shellcheck disable=SC2329
   sudo() {
     if [[ "$1" == "-n" && "$2" == "true" ]]; then
       return 1
@@ -108,6 +108,8 @@ Type 'exit' to quit."
   setup_menu "Menu label" "$TEST_TEMP_DIR/setup-menu" "menu_selection" <<< "2"
   assert_equal "$menu_selection" "option1"
 }
+
+# TODO test setup_child_directories
 
 @test "menu | exit" {
   assert_exit "$SCRIPT_UNDER_TEST" "menu \"Menu label\" \"options\" \"selection\" <<< \"exit\"" 0

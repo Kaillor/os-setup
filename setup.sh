@@ -34,7 +34,7 @@ main() {
   return 0
 }
 
-# shellcheck disable=SC2317
+# shellcheck disable=SC2329
 __install() {
   local setup_directory="$1"
   local profile="$2"

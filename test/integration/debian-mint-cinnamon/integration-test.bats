@@ -9,3 +9,5 @@ load "../../test-util.sh"
   assert_file_not_contains "$log_file" "\[WARNING\]"
   assert_file_not_contains "$log_file" "\[ERROR\]"
 }
+
+# TODO add more tests

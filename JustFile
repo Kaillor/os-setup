@@ -3,26 +3,34 @@ set shell := ["bash", "-c"]
 export BATS_TEST_TIMEOUT := "5"
 
 @ci:
-  sudo -v
-  printf "Run tests\n"
-  just test
-  printf "Find bugs\n"
-  just shellcheck
-  printf "Find vulnerabilities\n"
-  just shellharden-check
-  printf "Check formatting\n"
-  just format-check
+    sudo -v
+    printf "Run tests\n"
+    just test
+    printf "Find bugs\n"
+    just shellcheck
+    printf "Find vulnerabilities\n"
+    just shellharden-check
+    printf "Check formatting\n"
+    just format-check
+
+# TODO add integration test github action
 @integration-test:
-  source "./test/integration/test.sh" && run_tests
+    source "./test/integration/test.sh" && run_tests
+
 @format-apply:
-  shfmt -w .
+    shfmt -w .
+
 @format-check:
-  shfmt -d .
+    shfmt -d .
+
 @shellcheck:
-  shellcheck $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
+    shellcheck $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
+
 @shellharden-apply:
-  shellharden --replace $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
+    shellharden --replace $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
+
 @shellharden-check:
-  shellharden --check $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
+    shellharden --check $(find . \( -name "*.sh" -o -name "*.bats" \) -a ! -path "./test/bats/*")
+
 @test file="":
-  source "./test/test.sh" && run_tests "{{file}}"
+    source "./test/test.sh" && run_tests "{{ file }}"

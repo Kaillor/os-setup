@@ -1,5 +1,5 @@
---- /usr/share/cinnamon/applets/grouped-window-list@cinnamon.org/applet.js.orig	2025-02-24 16:24:47.000000000 +0100
-+++ /usr/share/cinnamon/applets/grouped-window-list@cinnamon.org/applet.js	2025-06-16 09:02:12.727351771 +0200
+--- applet.js.orig	2026-07-27 14:18:31.518187875 +0200
++++ applet.js	2026-07-27 14:18:58.995049597 +0200
 @@ -521,8 +521,8 @@
              // Original logic
              if (this.numberOfMonitors === 1) {
@@ -11,16 +11,20 @@
              } else {
                 /* This is an instance on the primary monitor - it will be
                  * responsible for any monitors not covered individually.  First
-@@ -537,9 +537,9 @@
+@@ -536,11 +536,11 @@
+                     }
                      instances[i] = instances[i].panel.monitorIndex;
                  }
-                 for (let i = 0; i < this.numberOfMonitors; i++) {
+-                for (let i = 0; i < this.numberOfMonitors; i++) {
 -                    if (instances.indexOf(i) === -1) {
 -                        monitorWatchList.push(i);
 -                    }
-+                    // if (instances.indexOf(i) === -1) {
-+                    monitorWatchList.push(i);
-+                    // }
-                 }
+-                }
++                // for (let i = 0; i < this.numberOfMonitors; i++) {
++                //     if (instances.indexOf(i) === -1) {
++                //         monitorWatchList.push(i);
++                //     }
++                // }
              }
          }
+         this.state.set({ monitorWatchList });
